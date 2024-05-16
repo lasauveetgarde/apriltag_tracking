@@ -1,72 +1,95 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 import rospy
-from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from math import pow, atan2, sqrt
+from tf.transformations import euler_from_quaternion
+from geometry_msgs.msg import Point, Twist
+import math
 
 
-class TurtleBot:
+class ROSInter:
+	def __init__(self):
+		# Start a ROS node
+		rospy.init_node("speed_controller")
 
-    def __init__(self):
-        rospy.init_node('turtlebot_controller', anonymous=True)
-        self.velocity_publisher = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+		# Subsribe for topic
+		self.sub = rospy.Subscriber("/odom", Odometry, self.odom_callback)
 
-        self.pose_subscriber = rospy.Subscriber('/odom', Odometry, self.update_pose)
-        self.pose = Odometry()
-        self.rate = rospy.Rate(10)
+		# Create publisher
+		# Message type: geometry_msgs/Twist
+		self.pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
 
-    def update_pose(self, data):
-        self.pose = data
-        self.pose.pose.pose.position.x = round(self.pose.pose.pose.position.x, 4)
-        self.pose.pose.pose.position.y = round(self.pose.pose.pose.position.y, 4)
-        print(self.pose.pose.pose.position.x)
+		# Init variables: robot position, orientation
+		self.x = 0.0
+		self.y = 0.0
+		self.theta = 0.0
 
-    def euclidean_distance(self, goal_pose):
-        return sqrt(pow((goal_pose.pose.pose.position.x - self.pose.pose.pose.position.x), 2) +
-                    pow((goal_pose.pose.pose.position.y - self.pose.pose.pose.position.y), 2))
+	# Callback for new odometry data
+	def odom_callback(self, msg):
+		# Store position and orientation
+		self.x = msg.pose.pose.position.x
+		self.y = msg.pose.pose.position.y
+		rot_q = msg.pose.pose.orientation
+		_, _, self.theta = euler_from_quaternion([rot_q.x, rot_q.y, rot_q.z, rot_q.w])
 
-    def linear_vel(self, goal_pose, constant=0.2):
-        return constant * self.euclidean_distance(goal_pose)
+	# Function for moving robot to a certain position
+	def move_to(self, x, y):
+		print('Move to: (%d, %d)' % (x, y))
+		speed = Twist()
 
-    def steering_angle(self, goal_pose):
-        return atan2(goal_pose.pose.pose.position.y - self.pose.pose.pose.position.y, goal_pose.pose.pose.position.x - self.pose.pose.pose.position.x)
+		r = rospy.Rate(20)
+		goal = Point()
+		goal.x = x
+		goal.y = y
 
-    def angular_vel(self, goal_pose, constant=0.1):
-        return constant * (self.steering_angle(goal_pose) - self.pose.pose.pose.orientation.z)
 
-    def move2goal(self):
-        goal_pose = Odometry()
-        goal_pose.pose.pose.position.x = 2.0
-        goal_pose.pose.pose.position.y = 1.0
-        distance_tolerance = 0.5
+		inc_x = goal.x - self.x
+		inc_y = goal.y - self.y
+		angle_to_goal = math.atan2(inc_y, inc_x)
 
-        vel_msg = Twist()
+		while abs(angle_to_goal - self.theta) > 0.1 or math.sqrt(inc_x**2 + inc_y**2) > 0.1:
+			inc_x = goal.x - self.x
+			inc_y = goal.y - self.y
+			angle_to_goal = math.atan2(inc_y, inc_x)
 
-        while self.euclidean_distance(goal_pose) >= distance_tolerance:
-            vel_msg.linear.x = self.linear_vel(goal_pose)
-            vel_msg.linear.y = 0
-            vel_msg.linear.z = 0
+			print('Position: (%f, %f' % (self.x, self.y))
+			print(f'angle to goal is {angle_to_goal} robot theta is {self.theta}')
 
-            vel_msg.angular.x = 0
-            vel_msg.angular.y = 0
-            vel_msg.angular.z = self.angular_vel(goal_pose)
+			print(f'errors is {angle_to_goal - self.theta}')
+			Kx = 0.1
+			Ky = 0.2
+			# speed.linear.x = Kx * inc_x
+			speed.linear.x = 0.5
 
-            self.velocity_publisher.publish(vel_msg)
+			speed.angular.z = Ky * (angle_to_goal - self.theta)
 
-            self.rate.sleep()
 
-        if self.euclidean_distance(goal_pose) <= distance_tolerance:
-            print('goal reached')
+			# if not (self.theta > 3.13 or self.theta < - 3.13):
+			# 	if angle_to_goal - self.theta > 0.2:
+			# 		print('Turning left...')
+			# 		speed.angular.z = -0.3
+			# 		speed.linear.x = 0.0
+			# 	elif angle_to_goal - self.theta < -0.2:
+			# 		print('Turning right...')
+			# 		speed.angular.z = 0.3
+			# 		speed.linear.x = 0.0
+			# elif math.sqrt(inc_x**2 + inc_y**2) > 0.2:
+			# 	print('Straight ahead...')
+			# 	speed.linear.x = 0.5
+			# 	speed.angular.z = 0.0
 
-        vel_msg.linear.x = 0
-        vel_msg.angular.z = 0
-        self.velocity_publisher.publish(vel_msg)
+			self.pub.publish(speed)
+			r.sleep()
 
-        rospy.spin()
+		print('Stop.')
+		speed.linear.x = 0.0
+		speed.angular.z = 0.0
+		self.pub.publish(speed)
 
-if __name__ == '__main__':
-    try:
-        x = TurtleBot()
-        x.move2goal()
-    except rospy.ROSInterruptException:
-        pass
+		return True
+
+# Create class instance
+ros_inter = ROSInter()
+x = -5
+y = -5
+print(ros_inter.move_to(x, y))
+

@@ -87,30 +87,6 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <model name='Apriltag36_11_00000'>
-      <link name='main'>
-        <pose>0 0 0 0 -0 0</pose>
-        <visual name='main_Visual'>
-          <geometry>
-            <box>
-              <size>1.25 1.25 0.01</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://Apriltag36_11_00000/materials/scripts</uri>
-              <uri>model://Apriltag36_11_00000/materials/textures</uri>
-              <name>Apriltag36_11_00000</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>1</static>
-      <pose>4.51953 -0.494474 0 0 -0 0</pose>
-    </model>
     <model name='wall'>
       <pose>-0.309583 -9.35465 0 0 -0 0</pose>
       <link name='Wall_0'>
@@ -904,28 +880,28 @@
       <pose>8.10046 -9.49548 0 0 -0 0</pose>
     </model>
     <state world_name='default'>
-      <sim_time>416 378000000</sim_time>
-      <real_time>431 825717517</real_time>
-      <wall_time>1715417649 897212869</wall_time>
-      <iterations>416378</iterations>
+      <sim_time>1903 973000000</sim_time>
+      <real_time>41 260507226</real_time>
+      <wall_time>1715853110 174689209</wall_time>
+      <iterations>40127</iterations>
       <model name='Apriltag36_11_00000'>
-        <pose>9.64416 -3.26455 1.15237 1.57128 -0.013341 -1.60684</pose>
+        <pose>8.80739 -2.43219 0.952178 0 -1.49534 0</pose>
         <scale>1 1 1</scale>
         <link name='main'>
-          <pose>9.64416 -3.26455 1.15237 1.57128 -0.013341 -1.60684</pose>
+          <pose>8.80739 -2.43219 0.952178 0 -1.49534 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='Dumpster'>
-        <pose>8.10046 -9.49548 0 0 -0 0</pose>
+        <pose>8.10046 -9.49548 0.001376 2e-06 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>8.10046 -9.49548 0 0 -0 0</pose>
+          <pose>8.10046 -9.49548 0.001376 2e-06 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='ground_plane'>
@@ -939,7 +915,7 @@
         </link>
       </model>
       <model name='wall'>
-        <pose>0.28981 -23.1624 0 0 -0 0</pose>
+        <pose>0.2898 -23.1624 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='Wall_0'>
           <pose>-15.4738 -30.7432 0 0 -0 1.309</pose>
@@ -967,7 +943,7 @@
         </link>
       </model>
       <model name='wall_0'>
-        <pose>0.072653 0.083063 0 0 -0 0</pose>
+        <pose>0.0727 0.08306 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='Wall_0'>
           <pose>-15.6909 -7.49772 0 0 -0 1.309</pose>
@@ -995,7 +971,7 @@
         </link>
       </model>
       <model name='wall_1'>
-        <pose>12.1026 -3.53023 0 0 0 -1.55795</pose>
+        <pose>12.1026 -3.53022 0 0 0 -1.55795</pose>
         <scale>1 1 1</scale>
         <link name='Wall_0'>
           <pose>4.31995 12.1347 0 0 0 -0.24895</pose>
@@ -1023,7 +999,7 @@
         </link>
       </model>
       <model name='wall_1_clone'>
-        <pose>-11.1765 -3.59211 0 0 0 -1.55795</pose>
+        <pose>-11.1765 -3.59212 0 0 0 -1.55795</pose>
         <scale>1 1 1</scale>
         <link name='Wall_0'>
           <pose>-18.9592 12.0728 0 0 0 -0.24895</pose>
@@ -1056,10 +1032,34 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-13.1607 -6.39557 7.53198 0 0.329013 0.03272</pose>
+        <pose>-4.90448 -1.30436 1.72617 0 0.129013 -0.071275</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+    <model name='Apriltag36_11_00000'>
+      <link name='main'>
+        <pose>0 0 0 0 -0 0</pose>
+        <visual name='main_Visual'>
+          <geometry>
+            <box>
+              <size>1.25 1.25 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://Apriltag36_11_00000/materials/scripts</uri>
+              <uri>model://Apriltag36_11_00000/materials/textures</uri>
+              <name>Apriltag36_11_00000</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+      <pose>4.59364 -1.4892 0 0 -0 0</pose>
+    </model>
   </world>
 </sdf>

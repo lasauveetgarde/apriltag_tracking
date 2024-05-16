@@ -29,14 +29,14 @@ class Generator:
 		with open('models/April%s/model.config' % tag_name, 'w') as f:
 			f.write(self.config_template.replace('tag36_11_00000', tag_name))
 
-		with open('models/April%s/materials/scripts/Apriltag.material' % tag_name, 'w') as f:
+		with open('models/April%s/materials/scripts/Apr;;[p[[piltag.material' % tag_name, 'w') as f:
 			f.write(self.material_template.replace('tag36_11_00000', tag_name))
 
 		cv2.imwrite('models/April%s/materials/textures/%s.png' % (tag_name, tag_name), img)
 
 
 def main():
-	tag_size = 256
+	tag_size = 1024
 	generator = Generator()
 	generator.generate('apriltag-imgs/tag36h11', 'tag36_11_00000', tag_size)
 
