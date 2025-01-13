@@ -46,7 +46,7 @@ class RobotController:
 		self.pid_lat = PIDController(2.5, 0.0, 0.0, 10) # Lateral PID controller object initialized with kP, kI, kD, kS
 		self.sub = rospy.Subscriber("/odom", Odometry, self.robot_controller_callback)
 		# Init variables: robot position, orientation
-		self.need_x = -2.0
+		self.need_x = 4.0
 		self.need_y = 2.0
 	def robot_controller_callback(self, msg):
 
@@ -92,8 +92,6 @@ class RobotController:
 			print('Stop.')
 		self.pub.publish(self.ctrl_msg)
 		
-
-
 
 
 def main(args=None):
